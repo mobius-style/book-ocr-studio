@@ -1,7 +1,14 @@
-# Source beta — 2026-09-24, revision 8
+# Source beta — 2026-09-24, revision 9
 
 This is a local-first Linux application source release with a static HF
 landing page. It is not a model release or an online OCR service.
+
+## Revision 9: community ports note
+
+- README ends with a short "Community ports welcome" section: forks and
+  ports to other platforms are welcome under AGPL-3.0-only, third-party
+  terms still apply, and no support or maintenance for other platforms is
+  promised. Documentation only; no license change.
 
 ## Revision 8: image layout
 

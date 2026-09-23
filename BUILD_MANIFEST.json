@@ -27,12 +27,12 @@
       "bytes": 34020
     },
     "README.md": {
-      "sha256": "405f27e9daa29e13d98dfc5f81f4c7672a99b65b13dca1bb7cfc8a0745700181",
-      "bytes": 9675
+      "sha256": "2650380526449bd51f61637420e7b3bdbb6ee527212725bb1cd085be6bb6c951",
+      "bytes": 10077
     },
     "RELEASE_NOTES.md": {
-      "sha256": "e38128da01852813eb780cda2a415c19ff705cdcdf58c839e99e8df4b9cc87f6",
-      "bytes": 12166
+      "sha256": "2bb27ff59e540a790f65f78d969f441c7466e1ef6c2716075af82ae96302a51c",
+      "bytes": 12473
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "e6c9947d707148aa847344656bdd021b29df41c4ada0f1bcdd3b25998d67f203",
@@ -235,8 +235,8 @@
       "bytes": 6017
     },
     "release-notes.html": {
-      "sha256": "3dde71cf3af205a49c913052ab73b749b0db6d925e2cb34d10b954303ff35c18",
-      "bytes": 13655
+      "sha256": "e05fc98a5b8a60c339a526a41a356c15307321984ac5eb7fc37176b00197ba9a",
+      "bytes": 13980
     },
     "requirements-yomitoku.txt": {
       "sha256": "40d5ea0a535e8ef2ed0b4947cbd31a543eb12c56e49e177132148ff8ee2a0e13",

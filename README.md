@@ -116,3 +116,9 @@ Run `python3 scripts/verify_public.py .` to check a built source package. Public
 ## Redistributing modified versions
 
 See [HUGGINGFACE.md](HUGGINGFACE.md) for owner-facing packaging and upload instructions.
+
+## Community ports welcome
+
+I built this tool for my own Linux workflow and am sharing it in the hope that others find it useful. If you like it, you're welcome to fork it and port it to Windows, macOS, or other platforms under AGPL-3.0-only. Third-party dependency and model licenses still apply.
+
+Pull requests are welcome, but I cannot promise support, testing, or maintenance for other platforms.
