@@ -1,1 +1,1 @@
-fe2de7ef63ab2c970cc1eaaa6556486a192803df078d87d3d4504da85d2dc2df  book-ocr-studio-source.zip
+b929a75964c4159672d260b68c71050cafb75fbca67b971383c67b94b7368a34  book-ocr-studio-source.zip

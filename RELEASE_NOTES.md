@@ -1,7 +1,15 @@
-# Source beta — 2026-09-24, revision 7
+# Source beta — 2026-09-24, revision 8
 
 This is a local-first Linux application source release with a static HF
 landing page. It is not a model release or an online OCR service.
+
+## Revision 8: image layout
+
+- Review feedback: the three-column thumbnails were too small to read. The
+  review and Markdown images are now shown full width, the start screen
+  smaller, with a "click to enlarge" hint; the review caption is a one-line
+  summary with the specific deferred-suggestion example beneath it.
+- Documentation only; no other file changed.
 
 ## Revision 7: screenshots and README order
 

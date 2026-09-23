@@ -20,10 +20,21 @@ Turn your Kindle books, PDFs and page images into files you can read, search or 
 
 ## What it looks like
 
-| 1 · Start | 2 · Review against the page image | 3 · Use the Markdown |
-| --- | --- | --- |
-| ![Start screen: PDF / Images and Kindle capture tabs, page range, GPU mode, Start conversion](docs/images/01-start.png) | ![Review screen: source page image beside Original OCR, Gemma suggestions and Changes tabs, with Approve and Restore buttons](docs/images/02-review.jpg) | ![Exported Markdown with source-page markers, and a question answered from it by a local model](docs/images/03-markdown.png) |
-| Upload a PDF or page images, or switch to the Kindle capture tab. | Every page shows the source image next to the original OCR, Gemma's suggested text and a diff. Nothing is applied until you approve it. On this page, Gemma proposed changing "can neither" to "cannot"; the image check did not support it, so the suggestion was deferred and the original reading kept. | The Markdown keeps a `<!-- source page: n -->` marker per screen, so any LLM answer can be checked against the page. |
+Click any image to enlarge it.
+
+**1 · Start.** Upload a PDF or page images, or switch to the Kindle capture tab.
+
+<a href="docs/images/01-start.png"><img src="docs/images/01-start.png" width="70%" alt="Start screen: PDF / Images and Kindle capture tabs, page range, GPU mode, Start conversion"></a>
+
+**2 · Review against the page image.** Compare the page image with the suggested text; the original OCR is kept until you approve a page.
+
+<a href="docs/images/02-review.jpg"><img src="docs/images/02-review.jpg" width="100%" alt="Review screen: source page image beside Original OCR, Gemma suggestions and Changes tabs, with Approve and Restore buttons"></a>
+
+<sub>On this page Gemma proposed changing "can neither" to "cannot". The image check did not support it, so the suggestion was deferred and the original reading kept — the note and the deferral message are visible above the Approve / Restore buttons.</sub>
+
+**3 · Use the Markdown.** The export keeps a `<!-- source page: n -->` marker per screen, so any LLM answer can be checked against the page.
+
+<a href="docs/images/03-markdown.png"><img src="docs/images/03-markdown.png" width="100%" alt="Exported Markdown with source-page markers, and a question answered from it by a local model"></a>
 
 The page in image 2 is a public-domain scan (Ruskin, *The Stones of Venice*, 1890 edition, page 50, via Wikimedia Commons); images 1 and 3 use a short synthetic text written for this documentation. The answer in image 3 was produced by the local `gemma4:12b` through Ollama. The images illustrate the interface, not an accuracy level.
 
