@@ -34,6 +34,36 @@ class ReleaseTests(unittest.TestCase):
             self.assertFalse(app.exception)
             bridge.assert_called_once()
 
+    def test_release_images_are_the_only_binary_exception(self):
+        import io, struct, zlib
+        from PIL import Image
+        from PIL.PngImagePlugin import PngInfo
+        sys.path.insert(0, str(ROOT/'scripts'))
+        from verify_public import check_image, IMAGE_MAX_BYTES
+        def png(info=None):
+            buf = io.BytesIO(); Image.new('RGB', (4, 4), 'white').save(buf, 'PNG', pnginfo=info); return buf.getvalue()
+        def jpg():
+            buf = io.BytesIO(); Image.new('RGB', (4, 4), 'white').save(buf, 'JPEG'); return buf.getvalue()
+        check_image('docs/images/a.png', png())
+        check_image('docs/images/b.jpg', jpg())
+        meta = PngInfo(); meta.add_text('Comment', 'hidden')
+        with self.assertRaises(AssertionError):
+            check_image('docs/images/a.png', png(meta))
+        comment = b'\xff\xfe' + struct.pack('>H', 8) + b'hidden'
+        with self.assertRaises(AssertionError):
+            check_image('docs/images/b.jpg', jpg()[:2] + comment + jpg()[2:])
+        with self.assertRaises(AssertionError):
+            check_image('docs/images/a.png', png() + b'trailing')
+        with self.assertRaises(AssertionError):
+            check_image('chrome-extension/a.png', png())
+        with self.assertRaises(ValueError):
+            check_image('docs/images/a.gif', png())
+        with self.assertRaises(AssertionError):
+            check_image('docs/images/a.png', png() + b'\0' * IMAGE_MAX_BYTES)
+        for name in (ROOT/'public-release-files.txt').read_text().split():
+            if name.endswith(('.png', '.jpg')):
+                check_image(name, (ROOT/name).read_bytes())
+
     def test_offline_exports_preserve_synthetic_source(self):
         from PIL import Image, ImageDraw
         import pymupdf

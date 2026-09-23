@@ -72,3 +72,6 @@ CONNECTORS.md
 connectors.html
 owned_process.py
 public_tests/test_owned_process.py
+docs/images/01-start.png
+docs/images/02-review.jpg
+docs/images/03-markdown.png

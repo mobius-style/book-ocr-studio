@@ -1,8 +1,24 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Source beta — 2026-09-23, revision 6</title><style>body{margin:0;background:#f5f4ef;color:#18342f;font:17px/1.65 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:35px 24px}a{color:#215947}h1{line-height:1.2}pre{background:#e8ebe3;padding:18px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}code{font-size:.88em}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:9px;border:1px solid #becbbf;text-align:left}nav{margin-bottom:32px}</style></head><body><main><nav><a href="index.html">Book OCR Studio</a> · <a href="install.html">Install</a> · <a href="benchmarks.html">Comparison</a> · <a href="release-notes.html">Release notes</a></nav><h1>Source beta — 2026-09-23, revision 6</h1>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Source beta — 2026-09-24, revision 7</title><style>body{margin:0;background:#f5f4ef;color:#18342f;font:17px/1.65 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:35px 24px}a{color:#215947}h1{line-height:1.2}pre{background:#e8ebe3;padding:18px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}code{font-size:.88em}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:9px;border:1px solid #becbbf;text-align:left}nav{margin-bottom:32px}</style></head><body><main><nav><a href="index.html">Book OCR Studio</a> · <a href="install.html">Install</a> · <a href="benchmarks.html">Comparison</a> · <a href="release-notes.html">Release notes</a></nav><h1>Source beta — 2026-09-24, revision 7</h1>
 
 <p>This is a local-first Linux application source release with a static HF
 landing page. It is not a model release or an online OCR service.</p>
+
+<h2>Revision 7: screenshots and README order</h2>
+
+<ul>
+<li>Three interface images (start screen, page review, exported Markdown used
+with a local model) now open the README and the landing page, under
+<code>docs/images/</code>. They show the interface on a public-domain 1890 book scan
+and a short synthetic text; they are not an accuracy claim.</li>
+<li>README sections reordered so the workflow and output formats come before
+the license and dependency terms. The terms themselves are unchanged.</li>
+<li><code>scripts/verify_public.py</code> still rejects binary payloads everywhere except
+<code>docs/images/*.png|*.jpg</code>, which must be well-formed, at most 1 MiB, and
+free of PNG text/EXIF chunks and JPEG EXIF/XMP/comment segments, so images
+cannot carry hidden text. Public tests cover the rejected cases.</li>
+<li>No application code, model default, supported-model scope or license change.</li>
+</ul>
 
 <h2>Revision 6: wording only</h2>
 

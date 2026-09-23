@@ -7,6 +7,35 @@ import zipfile
 from pathlib import Path
 
 GENERATED = {'BUILD_MANIFEST.json', 'book-ocr-studio-source.zip', 'ARCHIVE_SHA256.txt'}
+# The only binary payloads allowed are documentation screenshots: fixed directory, fixed
+# formats, a size cap, and no metadata or comment segments that could carry hidden text.
+IMAGE_DIR = 'docs/images'
+IMAGE_MAX_BYTES = 1024 * 1024
+
+def check_image(name, data):
+    rel = Path(name)
+    assert rel.parent.as_posix() == IMAGE_DIR, 'Binary payload rejected by text-only release policy: '+name
+    assert len(data) <= IMAGE_MAX_BYTES, 'Image exceeds size cap: '+name
+    if rel.suffix == '.png':
+        assert data[:8] == b'\x89PNG\r\n\x1a\n', 'Not a PNG: '+name
+        pos = 8
+        while pos + 8 <= len(data):
+            length = int.from_bytes(data[pos:pos+4], 'big'); kind = data[pos+4:pos+8]
+            assert kind not in {b'tEXt', b'iTXt', b'zTXt', b'eXIf'}, 'PNG metadata chunk rejected: '+name
+            pos += 12 + length
+            if kind == b'IEND': break
+        assert kind == b'IEND' and pos == len(data), 'Malformed PNG or trailing data: '+name
+    elif rel.suffix == '.jpg':
+        assert data[:2] == b'\xff\xd8' and data[-2:] == b'\xff\xd9', 'Not a JPEG: '+name
+        pos = 2
+        while pos + 4 <= len(data) and data[pos] == 0xFF:
+            marker = data[pos+1]
+            if marker == 0xDA: break  # start of scan; entropy-coded data follows
+            assert marker not in {0xE1, 0xFE}, 'JPEG EXIF/XMP or comment segment rejected: '+name
+            pos += 2 + int.from_bytes(data[pos+2:pos+4], 'big')
+        assert marker == 0xDA, 'Malformed JPEG: '+name
+    else:
+        raise ValueError('Binary payload rejected by text-only release policy: '+name)
 
 def verify(root):
     root = Path(root).resolve()
@@ -32,6 +61,8 @@ def verify(root):
         try:
             text = data.decode('utf-8')
         except UnicodeDecodeError as exc:
+            if Path(name).suffix in {'.png', '.jpg'}:
+                check_image(name, data); continue
             raise ValueError('Binary payload rejected by text-only release policy: '+name) from exc
         # Local user paths, common token forms and PEM private keys are not source assets.
         assert not re.search(r'/home/' + r'[^/\s]+/', text), 'Personal path: '+name

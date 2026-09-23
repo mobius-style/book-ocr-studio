@@ -1,7 +1,21 @@
-# Source beta — 2026-09-23, revision 6
+# Source beta — 2026-09-24, revision 7
 
 This is a local-first Linux application source release with a static HF
 landing page. It is not a model release or an online OCR service.
+
+## Revision 7: screenshots and README order
+
+- Three interface images (start screen, page review, exported Markdown used
+  with a local model) now open the README and the landing page, under
+  `docs/images/`. They show the interface on a public-domain 1890 book scan
+  and a short synthetic text; they are not an accuracy claim.
+- README sections reordered so the workflow and output formats come before
+  the license and dependency terms. The terms themselves are unchanged.
+- `scripts/verify_public.py` still rejects binary payloads everywhere except
+  `docs/images/*.png|*.jpg`, which must be well-formed, at most 1 MiB, and
+  free of PNG text/EXIF chunks and JPEG EXIF/XMP/comment segments, so images
+  cannot carry hidden text. Public tests cover the rejected cases.
+- No application code, model default, supported-model scope or license change.
 
 ## Revision 6: wording only
 

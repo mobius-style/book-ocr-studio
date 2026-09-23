@@ -18,20 +18,16 @@ Turn your Kindle books, PDFs and page images into files you can read, search or 
 
 **Local OCR. Local Gemma review. Local MD, HTML, PDF and EPUB export.**
 
+## What it looks like
+
+| 1 · Start | 2 · Review against the page image | 3 · Use the Markdown |
+| --- | --- | --- |
+| ![Start screen: PDF / Images and Kindle capture tabs, page range, GPU mode, Start conversion](docs/images/01-start.png) | ![Review screen: source page image beside Original OCR, Gemma suggestions and Changes tabs, with Approve and Restore buttons](docs/images/02-review.jpg) | ![Exported Markdown with source-page markers, and a question answered from it by a local model](docs/images/03-markdown.png) |
+| Upload a PDF or page images, or switch to the Kindle capture tab. | Every page shows the source image next to the original OCR, Gemma's suggested text and a diff. Nothing is applied until you approve it. On this page, Gemma proposed changing "can neither" to "cannot"; the image check did not support it, so the suggestion was deferred and the original reading kept. | The Markdown keeps a `<!-- source page: n -->` marker per screen, so any LLM answer can be checked against the page. |
+
+The page in image 2 is a public-domain scan (Ruskin, *The Stones of Venice*, 1890 edition, page 50, via Wikimedia Commons); images 1 and 3 use a short synthetic text written for this documentation. The answer in image 3 was produced by the local `gemma4:12b` through Ollama. The images illustrate the interface, not an accuracy level.
+
 This is a Linux-focused source beta. See [INSTALL.md](INSTALL.md) for the isolated-environment installer and [RELEASE_NOTES.md](RELEASE_NOTES.md) for the exact validation scope. Compatibility with every GPU, language or Kindle layout is not guaranteed. On Hugging Face, this Space is a static distribution page; processing runs on your own computer.
-
-## License and optional engines
-
-Original application code: **AGPL-3.0-only** ([LICENSE](LICENSE)). See [third-party notices](THIRD_PARTY_NOTICES.md) for separate dependency and model terms. No weights, environments or book content are part of the intended source distribution.
-
-**Marker is the default OCR engine for new jobs.** YomiToku is an explicit optional choice with CC BY-NC-SA 4.0 terms unless separately licensed. Marker/Surya model weights also have additional conditions: choosing Marker is not a declaration of unrestricted commercial eligibility. Source-only packaging does not remove third-party obligations.
-
-## What stays local
-
-- OCR, image-based Gemma review, source images, suggestions and exports stay in the local workflow. No cloud AI service is used by default. If you explicitly enable the optional API connector, images and OCR text are sent to the endpoint you select.
-- The app listens on `127.0.0.1:8507`; the optional Chrome bridge uses `127.0.0.1:8508`.
-- Initial dependency/model downloads need internet access. Kindle login and reading communicate with Amazon. Browser extensions, translation services and files you choose to upload elsewhere are outside the local processing boundary.
-- The app preserves the source language; it does not translate books. Accuracy varies by language, layout and scan quality. Japanese and English samples have been tested; other languages are not universally validated.
 
 ## Workflow
 
@@ -55,6 +51,19 @@ Original application code: **AGPL-3.0-only** ([LICENSE](LICENSE)). See [third-pa
 Filenames default to `Book title_Author.ext`; when the author is unknown, the title alone is used. Titles and authors remain in their original language. PDF and EPUB are reading copies, not reproductions of publisher typography. Input-screen numbering is not necessarily printed page numbering. Source images preserve layouts that OCR may interpret incorrectly.
 
 **Original OCR is never silently replaced by unapproved model suggestions.** The reading text uses original OCR unless a matching candidate has been explicitly approved. Both OCR and model review can be wrong. Check the image for important quotations, numbers and names. A successful review is not proof of correctness.
+
+## What stays local
+
+- OCR, image-based Gemma review, source images, suggestions and exports stay in the local workflow. No cloud AI service is used by default. If you explicitly enable the optional API connector, images and OCR text are sent to the endpoint you select.
+- The app listens on `127.0.0.1:8507`; the optional Chrome bridge uses `127.0.0.1:8508`.
+- Initial dependency/model downloads need internet access. Kindle login and reading communicate with Amazon. Browser extensions, translation services and files you choose to upload elsewhere are outside the local processing boundary.
+- The app preserves the source language; it does not translate books. Accuracy varies by language, layout and scan quality. Japanese and English samples have been tested; other languages are not universally validated.
+
+## License and optional engines
+
+Original application code: **AGPL-3.0-only** ([LICENSE](LICENSE)). See [third-party notices](THIRD_PARTY_NOTICES.md) for separate dependency and model terms. No weights, environments or book content are part of the intended source distribution.
+
+**Marker is the default OCR engine for new jobs.** YomiToku is an explicit optional choice with CC BY-NC-SA 4.0 terms unless separately licensed. Marker/Surya model weights also have additional conditions: choosing Marker is not a declaration of unrestricted commercial eligibility. Source-only packaging does not remove third-party obligations.
 
 ## Models and hardware
 

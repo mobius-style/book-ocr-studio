@@ -27,12 +27,12 @@
       "bytes": 34020
     },
     "README.md": {
-      "sha256": "046e1141ad18273b504d6535e321872294ce21487a330feea74da44a2accaa5c",
-      "bytes": 8056
+      "sha256": "12662ded27f3bf97f830b0f68fe1bb7796fc057195fa0a5b4ac9f75a01404612",
+      "bytes": 9408
     },
     "RELEASE_NOTES.md": {
-      "sha256": "f34c45cf9581e74d3d95394a9ec68e6c38b14b1d4d39983715c7b8b89a940f82",
-      "bytes": 10948
+      "sha256": "6ef666bca6025da7f460ed0dacb99844b87e34aab8bcbb931f5e686ab7f4c7cf",
+      "bytes": 11800
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "e6c9947d707148aa847344656bdd021b29df41c4ada0f1bcdd3b25998d67f203",
@@ -114,6 +114,18 @@
       "sha256": "a950d7ccd33926f37edccb82366c37e2b96f7c8d0cc83de463cde8fb562e7d77",
       "bytes": 1484
     },
+    "docs/images/01-start.png": {
+      "sha256": "5b1c4d57e779fc810116cfa77b7b0dd0bc0ddaa1b82fbb5879fd9f0fcd418278",
+      "bytes": 146560
+    },
+    "docs/images/02-review.jpg": {
+      "sha256": "f33f3e66ebdba2892a7f2d16834d28f9578d79e7bcbd24c222760d7e6a81bb6d",
+      "bytes": 295363
+    },
+    "docs/images/03-markdown.png": {
+      "sha256": "46206f846044e0c7c89c06643bd0b96640633f405191796dc06df891b851b153",
+      "bytes": 385399
+    },
     "docs/legal/PUBLIC_SCOPE.md": {
       "sha256": "0828df42ba1f6131307429466aeeb389874ba2b805b473e754363f2414904d33",
       "bytes": 1779
@@ -135,8 +147,8 @@
       "bytes": 2892
     },
     "index.html": {
-      "sha256": "e783a61761c6a0f54fb45d76cec80f756752a4174200e3a9659dbd64207c4fa3",
-      "bytes": 3960
+      "sha256": "6753d3205c121fd8d59ba57ae04195a8a34c707b0100feb4f2c33743643c2af2",
+      "bytes": 5884
     },
     "install.html": {
       "sha256": "293eb552131748185ac4065a353ec60e87bbfc13d9d784d000236a913930b2f1",
@@ -195,8 +207,8 @@
       "bytes": 8047
     },
     "public-release-files.txt": {
-      "sha256": "bd4232a37a6377a88739100eb592b7adceda8ec8e8e11f94fc223a629f6435c8",
-      "bytes": 1377
+      "sha256": "7133f1e99aa175b5c39ab43deef065c702cb94cdbd1957b1df7fdf2395919547",
+      "bytes": 1456
     },
     "public_tests/test_connector.py": {
       "sha256": "fa28255904ad4169da8e9d074e63e26354a9d85fe04a4dec213d5156252f46ca",
@@ -211,8 +223,8 @@
       "bytes": 3416
     },
     "public_tests/test_release.py": {
-      "sha256": "076a89bb2921c8e4533333c81ae04dc519520fc4295262eb8ba056d30f6a7c49",
-      "bytes": 3851
+      "sha256": "73573e1ccd415042e6fc44ce4420fd54e2d1cb06ff2507010c2763068546995f",
+      "bytes": 5487
     },
     "reader_detection.py": {
       "sha256": "40b955b32f9dbc067aaa8597fcd2e5e61acb49a654edee071642d6216c14587e",
@@ -223,8 +235,8 @@
       "bytes": 6017
     },
     "release-notes.html": {
-      "sha256": "ba82199d13a2e634aa51fc89f35ed10dc8b77b8b2e58bf4e19ac82d82cabfea7",
-      "bytes": 12348
+      "sha256": "df3c056e6af2a93a7894c3c4364b9f2343db1fb746c34e42bbfe243eb0c29972",
+      "bytes": 13264
     },
     "requirements-yomitoku.txt": {
       "sha256": "40d5ea0a535e8ef2ed0b4947cbd31a543eb12c56e49e177132148ff8ee2a0e13",
@@ -271,8 +283,8 @@
       "bytes": 4519
     },
     "scripts/verify_public.py": {
-      "sha256": "99b9441aa1696d813267b6874ca9b72975cb4e902f3c6db6ea313eb30db57b7b",
-      "bytes": 3079
+      "sha256": "81065467835ed662b5e5fce77b0b1ce63c529ae7329d3c46278309d30778e3b3",
+      "bytes": 4775
     },
     "setup_chrome_bridge.py": {
       "sha256": "b543a2fe71bf82d5901a5b4597039ac3a1bc470be513a9292df89cbb4a17ebe7",
