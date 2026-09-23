@@ -1,0 +1,31 @@
+.venv/
+.chrome-bridge-key
+chrome-extension/config.js
+chrome-bridge-status.json
+*.log
+*.lock
+__pycache__/
+captures/
+jobs/
+backups/
+
+# Private environments, evidence and generated configuration (at any depth)
+.venv*/
+**/backup/
+**/backups/
+**/chrome-extension/config.js
+**/.chrome-bridge-key
+*.chrome-bridge-key
+gpu-profile.json
+/tests/
+/release-staging/
+
+/docs/legal/evidence/
+
+# Local model downloads and resolved machine settings
+/models/
+/model-settings.json
+/model-settings.json.tmp-*
+
+# Private API credentials and immutable connector profiles
+/.connector-profiles/

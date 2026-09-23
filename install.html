@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux installation</title><style>body{margin:0;background:#f5f4ef;color:#18342f;font:17px/1.65 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:35px 24px}a{color:#215947}h1{line-height:1.2}pre{background:#e8ebe3;padding:18px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}code{font-size:.88em}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:9px;border:1px solid #becbbf;text-align:left}nav{margin-bottom:32px}</style></head><body><main><nav><a href="index.html">Book OCR Studio</a> · <a href="install.html">Install</a> · <a href="benchmarks.html">Comparison</a> · <a href="release-notes.html">Release notes</a></nav><h1>Linux installation</h1>
+
+<p>This beta targets Linux x86-64, Python 3.10 or 3.11, NVIDIA CUDA GPUs,
+Google Chrome and Ollama. It is not a hosted OCR service. Model downloads
+can require many gigabytes; model weights are not inside the source ZIP.
+The standard installer prepares Gemma 12B automatically. The OCR-specific
+C1 prompt and review workflow are already included in the application.
+Install <a href="https://ollama.com/download/linux">Ollama</a> before running the standard installer.</p>
+
+<h2>1. Python environment</h2>
+
+<p>Install Python with its <code>venv</code> support using your operating system's package
+manager. Extract the source archive to a writable directory. Then run:</p>
+
+<pre><code>bash install.sh
+</code></pre>
+
+<p>If your default Python is newer, select an installed supported interpreter:</p>
+
+<pre><code>BOOK_OCR_PYTHON=python3.11 bash install.sh
+</code></pre>
+
+<p>The installer creates <code>.venv</code> without inheriting system Python packages. It
+refuses to modify an existing environment. A failed attempt may leave a
+partial <code>.venv</code>; move that directory aside before retrying. It does not
+install operating-system packages, Chrome or Ollama. After Python checks pass,
+it downloads missing Gemma 12B weights using your installed Ollama executable.
+Use <code>bash install.sh --skip-model</code> for Python dependencies only.
+<code>requirements.txt</code> pins direct dependencies. On Python 3.10, the installer
+also applies the tested transitive version snapshot in
+<code>constraints-linux-py310.txt</code>. It is not an artifact-hash lock. Python 3.11
+resolves transitive dependencies with pip and has not been installation-tested
+for this release. The optional YomiToku environment resolves separately.</p>
+
+<h2>2. CUDA and models</h2>
+
+<p>Install a compatible NVIDIA driver and check <code>nvidia-smi</code>. The installer
+uses PyTorch 2.10.0 from PyPI. Confirm CUDA actually works:</p>
+
+<pre><code>.venv/bin/python scripts/check_install.py
+</code></pre>
+
+<p>If CUDA is unavailable, resolve the driver/PyTorch combination before OCR.
+This build has not been qualified for CPU-only, AMD or Apple GPUs.</p>
+
+<p>The standard installer invokes <code>scripts/setup_models.py</code>, which starts its own
+short-lived loopback Ollama server and obtains <code>gemma4:12b-it-qat</code>. It does not
+run inference or stop your existing Ollama server. Download progress is shown.
+Existing matching tags in the chosen store are reused; their digest is recorded.
+Tags can change upstream, so these are not permanently pinned weight artifacts.</p>
+
+<p>Weights default to <code>models/</code> inside the extracted application directory.
+<code>model-settings.json</code> records the resolved path and model digests; workers read
+the same settings. Both are private and excluded from public packages.</p>
+
+<p>If the download fails or you used <code>--skip-model</code>, retry just the model step:</p>
+
+<pre><code>.venv/bin/python scripts/setup_models.py
+</code></pre>
+
+<p>Do not rerun the full installer against an existing <code>.venv</code>. Dependencies remain
+installed after a failed model step. Retry can reuse Ollama's cached download data.</p>
+
+<p>To add 26B (optional; does not change the UI's 12B default):</p>
+
+<pre><code>.venv/bin/python scripts/setup_models.py --model gemma4:26b-a4b-it-qat
+</code></pre>
+
+<p>Select 26B in the app when needed. See <a href="benchmarks.html">BENCHMARKS.md</a> for the
+limited historical comparison; there is no guaranteed whole-job speedup.</p>
+
+<p>To reuse a different model store, set <code>BOOK_OCR_MODELS</code> to its directory before
+running setup. The setup records that directory for subsequent workers. An
+explicit environment override takes precedence. It must be readable and, for
+new downloads, writable; no permissions are changed on an existing store.
+Do not make model directories world-writable. For old installations without
+settings, workers retain the legacy system-store fallback.</p>
+
+<p>Read <a href="licenses.html">third-party terms</a> before downloading. Each exact
+model retains its own license. Marker obtains its own weights on first OCR use;
+those weights are separate from the Gemma setup step. C1 here is an OCR-specific
+application workflow, not a new or fine-tuned model weight release.</p>
+
+<h2>3. Start</h2>
+
+<pre><code>bash run.sh
+</code></pre>
+
+<p>Open <code>http://127.0.0.1:8507/</code>. Use <code>BOOK_OCR_PORT</code> to change the UI port.
+The optional extension opens port 8507 by default. The bridge uses port 8508.</p>
+
+<p>For a synthetic source/export smoke test (no models):</p>
+
+<pre><code>.venv/bin/python -m unittest discover -s public_tests -v
+</code></pre>
+
+<h2>4. Kindle: dedicated Chrome or optional extension</h2>
+
+<p>Install Google Chrome separately. The <strong>Open Chrome for Kindle</strong> button uses
+that browser through Playwright; it does not install another browser. Sign
+in to Amazon in the opened window. The default profile is private local
+<code>captures/chrome-profile/</code>, with no migration of any older profile. A fresh
+installation therefore requires login again. Supported reader hosts are
+<code>read.amazon.co.jp</code> and <code>read.amazon.com</code>; layouts may still need adaptation.</p>
+
+<p>To connect an existing regular Chrome instead:</p>
+
+<ol>
+<li>Run <code>.venv/bin/python setup_chrome_bridge.py</code> locally.</li>
+<li>Open <code>chrome://extensions</code>, enable Developer mode and load the
+<code>chrome-extension/</code> directory. Review the debugger permission.</li>
+<li>In the app, expand <strong>Connect your regular Chrome (optional)</strong> and click
+<strong>Enable local Chrome bridge</strong>. Alternatively set
+<code>BOOK_OCR_ENABLE_BRIDGE=1</code> before launching the app.</li>
+<li>Open one Kindle book in Chrome, then start capture in the app.</li>
+</ol>
+
+<p>The bridge is not started for PDF-only use by default. Once enabled it runs
+as a background process, including after the browser tab closes. To stop a
+manually started bridge, use Ctrl+C; for an app-started bridge, identify the
+exact <code>chrome_bridge.py</code> process in your process manager and terminate only
+that process. Never use a broad command that kills all Python or Chrome
+processes. Do not operate competing debugger extensions on the same tab.</p>
+
+<p>The generated <code>.chrome-bridge-key</code> and <code>chrome-extension/config.js</code> are
+private and excluded from the public package. Every fresh installation
+generates its own key. To rotate it, stop the bridge, remove those two local
+files, rerun setup and reload the extension. No key is supplied by this release.</p>
+
+<h2>Optional YomiToku</h2>
+
+<p>Read its CC BY-NC-SA terms and commercial licensing options in
+<a href="licenses.html">THIRD<em>PARTY</em>NOTICES.md</a> first. If your use is permitted:</p>
+
+<pre><code>bash install.sh --yomitoku
+</code></pre>
+
+<p>This creates a separate <code>.venv-yomitoku</code>. Select YomiToku explicitly in the
+UI. Its weights are obtained separately. The default remains Marker.</p>
+
+<h2>Privacy and troubleshooting</h2>
+
+<p>Keep <code>jobs/</code>, <code>captures/</code>, browser profiles, logs and generated credentials
+private. Use a source-only release builder when publishing modifications;
+do not upload your working directory. Output to another AI service is a
+separate user-controlled action.</p>
+
+<p>When reporting an error, provide software versions and a synthetic
+reproduction. Remove book text, screenshots, paths containing personal
+details, cookies and secrets from logs before sharing.</p>
+
+<h2>Optional vision API instead of local Gemma</h2>
+
+<p>Gemma 4 remains the recommended default. To use a user-selected vision model
+through the optional OpenAI-compatible connector, follow <a href="connectors.html">CONNECTORS.md</a>.
+For this route, <code>bash install.sh --skip-model</code> skips Gemma preparation; local
+OCR dependencies are still installed. You must prepare your chosen server
+separately. A remote endpoint receives the page images and OCR text after
+explicit enablement and may charge fees. API compatibility is not a quality
+or completion guarantee.</p>
+
+<h2>GPU process lifetime</h2>
+
+<p>The app terminates its dedicated OCR and local Gemma processes after work or
+on error. An independent supervisor watches an ownership pipe and cleans up the
+owned process group if its caller disappears. This was tested with SIGKILL of
+the caller, not SIGKILL of the supervisor itself or an unrecoverable driver fault.
+Other applications and user-managed API servers are never stopped by this mechanism.
+Closing the browser tab alone does not cancel an active background job; use the
+job Stop control. Model review may finish its current request before stopping.</p>
+<hr><p><a href="INSTALL.md" download>Download original text</a></p></main></body></html>

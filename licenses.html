@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Licenses and source</title><style>body{margin:0;background:#f5f4ef;color:#18342f;font:17px/1.65 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:35px 24px}a{color:#215947}h1{line-height:1.2}pre{background:#e8ebe3;padding:18px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}code{font-size:.88em}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:9px;border:1px solid #becbbf;text-align:left}nav{margin-bottom:32px}</style></head><body><main><nav><a href="index.html">Book OCR Studio</a> · <a href="install.html">Install</a> · <a href="benchmarks.html">Comparison</a> · <a href="release-notes.html">Release notes</a></nav><h1>Licenses and source</h1>
+
+<p>Book OCR Studio original application code is licensed under <strong>AGPL-3.0-only</strong>; see <code>LICENSE</code>. You may use, modify and redistribute it under those terms. No warranty is provided. The license does not grant rights in books, brands, third-party code or model weights. Source is supplied with the application; operators of modified network-accessible versions must review AGPL section 13 and provide the required corresponding source.</p>
+
+<p>The original application license is a project choice for the present dependency stack, not a claim that all dependencies have been relicensed or that every commercial use is cleared.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Component checked</th>
+  <th>Code terms</th>
+  <th>Model / other terms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>PyMuPDF 1.28.2</td>
+  <td>AGPL-3.0 or Artifex commercial license</td>
+  <td>Used for PDF processing/export; its upstream terms remain applicable</td>
+</tr>
+<tr>
+  <td>Marker 1.10.2</td>
+  <td>GPL-3.0-or-later</td>
+  <td>Modified AI Pubs Open RAIL-M model terms; separate eligibility/use conditions</td>
+</tr>
+<tr>
+  <td>Surya 0.17.1</td>
+  <td>GPL-3.0-or-later</td>
+  <td>Modified AI Pubs Open RAIL-M model terms; separate eligibility/use conditions</td>
+</tr>
+<tr>
+  <td>YomiToku 0.15.0 (optional)</td>
+  <td>CC BY-NC-SA 4.0</td>
+  <td>Associated weights also CC BY-NC-SA 4.0; commercial use requires a suitable separate license</td>
+</tr>
+<tr>
+  <td>Gemma <code>gemma4:12b-it-qat</code>, <code>gemma4:26b-a4b-it-qat</code></td>
+  <td>Served by separately installed Ollama</td>
+  <td>These exact local tags report Apache-2.0 in <code>ollama show --license</code>; recheck the exact artifact when obtaining weights</td>
+</tr>
+<tr>
+  <td>Streamlit 1.47.0</td>
+  <td>Apache-2.0</td>
+  <td>Application UI</td>
+</tr>
+<tr>
+  <td>markdown2 2.5.5</td>
+  <td>MIT (installed metadata)</td>
+  <td>Build-time static documentation rendering</td>
+</tr>
+<tr>
+  <td>Requests 2.32.4</td>
+  <td>Apache-2.0</td>
+  <td>Loopback HTTP client</td>
+</tr>
+<tr>
+  <td>Pillow 10.4.0</td>
+  <td>HPND</td>
+  <td>Image processing</td>
+</tr>
+<tr>
+  <td>PyTorch 2.10.0</td>
+  <td>BSD-3-Clause</td>
+  <td>GPU runtime; bundled CUDA components have separate vendor terms</td>
+</tr>
+<tr>
+  <td>Torchvision 0.25.0</td>
+  <td>BSD (installed metadata)</td>
+  <td>Vision utilities; preserve the installed license</td>
+</tr>
+<tr>
+  <td>Transformers 4.57.6</td>
+  <td>Apache-2.0</td>
+  <td>Model execution utilities; does not license model weights</td>
+</tr>
+<tr>
+  <td>OpenCV Python headless 4.11.0.86</td>
+  <td>Apache-2.0 (installed metadata)</td>
+  <td>Binary wheels include additional third-party notices</td>
+</tr>
+<tr>
+  <td>Playwright 1.63.0</td>
+  <td>Apache-2.0</td>
+  <td>Python browser automation used by the dedicated Chrome capture path; browser binaries have their own notices</td>
+</tr>
+</tbody>
+</table>
+
+<p>This is a focused inventory, not a complete transitive dependency SBOM. Follow upstream notices and preserve required attribution. We do not bundle third-party environments or model weights. Separate installation does not waive their use conditions or automatically resolve license compatibility.</p>
+
+<p><strong>Marker is not a blanket commercial-use replacement for YomiToku.</strong> Its versioned documentation describes additional model-weight conditions; verify the actual downloaded weights and your intended use before commercial deployment. YomiToku is not automatically selected merely because it is installed. Optional integration is retained for permitted local use; it is not a legal opinion that CC BY-NC-SA and AGPL form a distributable combined work.</p>
+
+<p>YomiToku integration uses a separate <code>.venv-yomitoku</code> Python environment and a child process launched by <code>worker.py</code>; job configuration, page images and OCR results are exchanged through files. The adapter is <code>yomitoku_worker.py</code>. The intended source-only release excludes the YomiToku environment and weights; these exist separately in the local development setup. These execution facts do not determine the legal classification of a combined distribution.</p>
+
+<p>Primary sources:
+- <a href="https://github.com/microsoft/playwright-python/blob/main/LICENSE">Playwright upstream license</a> (installed 1.63.0 metadata and packaged LICENSE also checked)
+- <a href="https://pymupdf.readthedocs.io/en/latest/about.html">PyMuPDF licensing</a>
+- <a href="https://github.com/datalab-to/marker/blob/v1.10.2/README.md#commercial-usage">Marker 1.10.2 terms</a>
+- <a href="https://github.com/datalab-to/surya/blob/v0.17.1/README.md">Surya 0.17.1 terms</a>
+- <a href="https://github.com/kotaro-kinoshita/yomitoku/blob/master/README_EN.md#license">YomiToku license and commercial options</a></p>
+
+<p>Do not publish purchased-book text/images, credentials, browser profiles or private processing records with the software. Only process content you are entitled to use under applicable law and service terms. Book OCR Studio is not affiliated with Amazon. Software licensing does not authorize redistribution of exported books.</p>
+
+<p>See <code>docs/legal/PUBLIC_SCOPE.md</code> for release scope and unresolved checks. Inventory checked on 2026-09-23.</p>
+<hr><p><a href="THIRD_PARTY_NOTICES.md" download>Download original text</a></p></main></body></html>

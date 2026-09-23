@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book OCR Studio — Local-first</title>
+<style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f5f4ef;color:#18342f;font:17px/1.65 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:70px 26px}small{letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(38px,7vw,70px);line-height:1.08;letter-spacing:-.05em;margin:20px 0}h2{font-size:24px}p{max-width:720px}.lead{font-size:23px;color:#426059}.badge{display:inline-block;background:#e2eadf;border-radius:24px;padding:6px 14px;font-size:14px}.button{display:inline-block;background:#215947;color:white;text-decoration:none;border-radius:8px;padding:13px 22px;margin:12px 8px 12px 0}.secondary{background:white;color:#215947;border:1px solid #baccc1}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:40px 0}.card{background:white;padding:24px;border-radius:14px;border:1px solid #e0e5df}.card h2{margin-top:0}a{color:#215947}code{background:#e8ebe3;padding:3px 7px;border-radius:4px}footer{margin-top:50px;border-top:1px solid #ccd6cd;padding-top:22px;font-size:14px;color:#53645c}@media(max-width:650px){main{padding-top:36px}.grid{grid-template-columns:1fr}}
+</style></head><body><main>
+<small>Linux source beta · Runs on your computer</small>
+<h1>Your books.<br>Your local workflow.</h1>
+<p class="lead">PDFs, page images and Kindle captures → local OCR and Gemma review → Markdown, HTML, PDF and EPUB.</p>
+<span class="badge">Local-first · Source language preserved</span>
+<p><a class="button" href="book-ocr-studio-source.zip" download>Download source ZIP</a><a class="button secondary" href="install.html">Installation guide</a></p>
+<p>This is a distribution page, not an online OCR service. Nothing uploaded here is processed. Install the application locally with an NVIDIA GPU and Ollama; the standard setup downloads Gemma 12B locally. C1 OCR review is included; 26B is optional.</p>
+<div class="grid">
+<section class="card"><h2>Import</h2><p>Use PDFs or page images, or connect a supported Kindle reader in Chrome. Source material stays local in the default Gemma workflow.</p></section>
+<section class="card"><h2>Review</h2><p>Gemma 12B is the default; 26B is optional. Möbius Custom C1 for OCR is an application review profile, not new model weights.</p></section>
+<section class="card"><h2>Export</h2><p>Download Markdown for model context, or create HTML, PDF and EPUB separately. Original OCR and unapproved suggestions remain distinct.</p></section>
+</div>
+<h2>Start locally</h2><p>Extract the ZIP, read the installation guide, then run <code>bash install.sh</code> and <code>bash run.sh</code>. Install Ollama first. Python 3.10/3.11 and compatible NVIDIA drivers are required. The installer prepares 12B; see the guide for Chrome and optional 26B setup.</p>
+<p><a href="benchmarks.html">12B / 26B comparison and limitations</a></p>
+<h2>Optional vision models</h2><p>Gemma 4 remains recommended. An opt-in OpenAI-compatible connector lets you choose another vision-capable model. Enabling it sends images and OCR text to your chosen endpoint. API compatibility does not guarantee completion or accuracy. Read the <a href="connectors.html">connector setup and privacy notes</a>.</p>
+<h2>Know the limits</h2><p>OCR and model suggestions can be wrong. Check important names, numbers and quotations against source images. GPU compatibility, languages and browser layouts are not universally validated. Read <a href="release-notes.html">the validation scope</a> before relying on this beta.</p>
+<footer><a href="license.html">AGPL-3.0-only application source</a> · <a href="licenses.html">Third-party and model terms</a><p>No model weights, books or credentials are included. Process only content you are entitled to use. Not affiliated with Amazon.</p></footer>
+</main></body></html>

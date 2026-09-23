@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Source beta — 2026-09-23, revision 5</title><style>body{margin:0;background:#f5f4ef;color:#18342f;font:17px/1.65 system-ui,sans-serif}main{max-width:900px;margin:auto;padding:35px 24px}a{color:#215947}h1{line-height:1.2}pre{background:#e8ebe3;padding:18px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}code{font-size:.88em}table{border-collapse:collapse;display:block;overflow:auto}td,th{padding:9px;border:1px solid #becbbf;text-align:left}nav{margin-bottom:32px}</style></head><body><main><nav><a href="index.html">Book OCR Studio</a> · <a href="install.html">Install</a> · <a href="benchmarks.html">Comparison</a> · <a href="release-notes.html">Release notes</a></nav><h1>Source beta — 2026-09-23, revision 5</h1>
+
+<p>This is a local-first Linux application source release with a static HF
+landing page. It is not a model release or an online OCR service.</p>
+
+<h2>Revision 5: updated model-comparison evidence</h2>
+
+<ul>
+<li>Public benchmark and release-note pages now include the larger same-day
+100-case measurement of the current review pipeline. It does not establish
+a general quality advantage for 26B; 12B+C1 remains the default.</li>
+<li>Documentation only: application behavior, model defaults and supported-model
+scope are unchanged. Historical measurements remain labeled separately.</li>
+</ul>
+
+<h2>Revision 4: process cleanup and connector response handling</h2>
+
+<ul>
+<li>Dedicated OCR and local model processes now run under an owned-process
+supervisor. Normal exit, termination and loss of the caller's private pipe
+trigger cleanup of the owned process group. This also covers a caller killed
+with SIGKILL; it does not stop unrelated servers or external API endpoints.</li>
+<li>Four real subprocess tests cover normal exit, termination, a killed caller
+and failed executable startup. Stubborn descendants are cleaned up while an
+unrelated process remains alive. A real local 12B loading test on the development
+GPU returned from 7,929 MiB to its 7 MiB baseline after both a deliberate
+exception and SIGKILL of the caller. This is one host, not a universal driver
+or crash-recovery guarantee; killing the supervisor itself is outside this test.</li>
+<li>The optional connector exposes a server-dependent reasoning-effort setting.
+Its default omits that parameter. A probe that exhausts the output budget
+reports that explicitly instead of treating it as a generic JSON failure.</li>
+<li>A single Markdown fence around an otherwise valid JSON value is accepted;
+JSON is never extracted from surrounding commentary. Existing schema and
+source-preservation checks still apply. Probe characters are rendered directly
+at a readable size, instead of enlarging a tiny font bitmap.</li>
+<li>Twenty-two public tests pass. These changes do not add any other model to
+a supported/guaranteed-model list.</li>
+</ul>
+
+<h2>Revision 3: optional vision API connector</h2>
+
+<ul>
+<li>Gemma 4 remains the recommended default; other models are an opt-in option.
+<strong>A vision-capable LLM is required</strong> for checking source images. An
+OpenAI-compatible API alone does not guarantee image/JSON support,
+correction quality or successful completion. This is not a universal model
+support claim; the historical Gemma comparison does not apply to other models.</li>
+<li>Added non-streaming Chat Completions with configurable base URL, model,
+API key, JSON response mode and output token parameter. A synthetic image
+test and explicit destination consent gate new jobs. No book is sent by
+the connection test. No cloud fallback is enabled automatically.</li>
+<li>Default processing remains local. When this option is enabled, images and
+OCR text go to the selected endpoint, which may be remote and charge fees.
+Private plaintext credential profiles are excluded from job exports and
+release payloads. See <a href="connectors.html">CONNECTORS.md</a>.</li>
+<li>PDF, images and both Kindle capture routes share the provider setting.
+External review runs after local OCR; the app does not manage that server's
+GPU or VRAM. Existing C1 validation and original-preservation logic remain.</li>
+<li>HTTP contract tests cover successful C1 review through the real worker,
+partial results on provider failure, JSON modes, consent, vision-test failure,
+redirects, error redaction and capture option propagation. They use a local
+synthetic server, not a claim of compatibility with every provider.</li>
+</ul>
+
+<h2>Revision 3 validation scope</h2>
+
+<ul>
+<li>Seventeen public tests passed in the existing isolated Python environment.
+Added UI checks verify that changing endpoint settings disables starting
+until a new test succeeds; missing profiles fail without another provider.</li>
+<li>Synthetic HTTP tests run the C1 correction and worker export path, including
+a provider-failure case with retained original OCR and partial output.</li>
+<li>No external paid service, real API key, new model download or hosted HF test
+is part of this validation. Contract tests are not a supported-model list.</li>
+<li>The earlier independent-environment dependency check remains applicable;
+the connector uses the already pinned requests and Pillow dependencies.</li>
+</ul>
+
+<h2>Standard model and revised distribution pages</h2>
+
+<ul>
+<li>Standard installation now prepares Gemma 12B automatically using a preinstalled
+Ollama executable. C1 OCR instructions and source-preserving review logic are
+included in the application; no fine-tuned weights are claimed.</li>
+<li>Weights are downloaded to a private local store, not included in the ZIP.
+Setup records the store and digest; GPU workers use that same store.</li>
+<li>26B is an optional additional setup command and does not change the UI default.
+<code>--skip-model</code> permits dependency-only installation; failed model downloads can
+be retried without reinstalling Python dependencies.</li>
+<li>Visitor-facing installation, release notes, benchmark and license links now
+open static HTML. Markdown originals remain available as explicit downloads.
+The owner publishing guide is no longer linked from the landing-page footer.</li>
+<li>README explains its HF metadata. ZIP and folder still contain identical bytes.</li>
+<li>Unexpected binary payloads now fail with an explicit text-only policy error;
+they are not silently omitted from privacy scanning.</li>
+</ul>
+
+<h2>Optional 26B: historical observations, not a guarantee</h2>
+
+<p>A newer same-day test of the shipped <code>c1_ocr_v3</code> pipeline used 100 bilingual
+synthetic cases x three seeds: exact corrections were <strong>165/300 (55.0%) for
+12B versus 74/300 (24.7%) for 26B</strong>. Thus the older six-image observations
+below do not establish a general quality advantage for 26B. This supports
+keeping 12B+C1 as the default. Repeated short synthetic cases are not a
+real-book accuracy guarantee; see <a href="benchmarks.html">BENCHMARKS.md</a> for errors,
+timings, limitations and the separately labeled unshipped-prompt follow-up.</p>
+
+<p>The standard remains 12B+C1. For users with more available VRAM, 26B+C1 is
+optional. An earlier six-image comparison recorded 52.291 seconds for 12B and
+40.022 seconds for 26B across 18 review requests. Exact-match corrections were
+51/54 versus 45/54; allowing colon/adjacent-space differences gave 51/54 versus
+54/54. Neither arm changed an originally correct field in that test.</p>
+
+<p>These are repeated fields on six synthetic images with an earlier C1 prompt,
+not a current c1<em>ocr</em>v3 end-to-end speed or quality evaluation. More VRAM use
+can force sequential execution, making full jobs slower. See
+<a href="benchmarks.html">BENCHMARKS.md</a> and its numeric data for scope and tradeoffs.</p>
+
+<h2>Packaging changes</h2>
+
+<ul>
+<li>Explicit allowlist builder; source hashes and archive consistency checks.</li>
+<li>No book samples, processing records, profiles, keys, virtual environments,
+model weights, machine logs or private evidence archives.</li>
+<li>Isolated Python installer and pinned direct dependency lists; optional
+YomiToku remains separately installed and explicitly selected.</li>
+<li>Default dedicated Chrome profile moved to captures/chrome-profile;
+old profiles are not moved. Fresh profile login is required.</li>
+<li>Removed legacy capture-process termination. Other tools are not stopped.</li>
+<li>Chrome bridge requires the Enable button or BOOK<em>OCR</em>ENABLE_BRIDGE=1.</li>
+<li>Synthetic, redistributable export/UI tests replace private book fixtures.</li>
+</ul>
+
+<h2>Revision 2 validation</h2>
+
+<ul>
+<li>Nine public tests passed in the isolated Python environment prepared for
+revision 1. Added tests cover download invocation, reuse, failed download,
+missing post-download model, invalid configuration and store precedence.</li>
+<li>A real, owned Ollama server successfully reused the existing 12B artifact,
+recorded its digest and stopped. That probe deliberately prohibited downloads
+and did not run inference or alter the main application model settings.</li>
+<li>First-time multi-GB transfer remains untested in this revision. Download and
+failure control flow were tested with mocks; no inference-quality retest is claimed.</li>
+<li>Python dependency installation was executed for revision 1. Revision 2 adds
+markdown2 as a direct dependency; its same pinned version was already in the
+tested environment and constraints. There was no second full dependency install.</li>
+<li>Static documentation omits optional syntax highlighting so clean and development
+environments produce identical HTML.</li>
+<li>HF-hosted rendering remains untested; HTML freshness, relative destinations
+and release-byte integrity are checked locally.</li>
+</ul>
+
+<h2>Revision 1 validation scope</h2>
+
+<ul>
+<li>Built an isolated environment from this source package on the development
+Linux x86-64 host, CPython 3.10.14, with system-site-packages disabled.</li>
+<li>Installer completed, pip check passed, and all listed runtime import probes
+passed, including Marker, Torch, Transformers and Playwright. CUDA was
+detected. No new model download or inference was performed.</li>
+<li>Three public tests passed in that fresh environment: private capture-profile
+placement/URL rejection, bridge opt-in UI behavior, and offline synthetic
+MD/HTML/PDF/EPUB export with unchanged source bytes and valid EPUB XML.</li>
+<li>Existing one-click UI and licensing regression checks passed in the
+development environment. Shell syntax, Python syntax and extension JS
+syntax checks passed. Existing-environment installer refusal was verified.</li>
+<li>Package checker passed a clean fixture and rejected an extra private file,
+altered source, a symlink, and an altered archive. The builder also checks
+payload bytes against the development bridge key without printing it.</li>
+<li>Optional YomiToku dependencies resolved in a pip dry run; its fresh isolated
+installation and inference were not executed in this packaging task.</li>
+<li>Python 3.10 resolved versions are retained in constraints-linux-py310.txt.
+Python 3.11 is allowed by the installer but remains untested here.</li>
+</ul>
+
+<h2>Limitations</h2>
+
+<p>Full end-to-end installation, model download and GPU inference on a second
+clean physical machine are not established by source packaging. Browser
+layouts, driver versions and GPUs vary. Tests with generated pages do not
+prove OCR or correction accuracy. No universal multilingual accuracy claim
+is made. The scheduler is not proven optimal; 26B is optional.</p>
+
+<p>Version pins and the Python 3.10 constraints are not artifact-hash locks or a complete license SBOM. Exact
+weight licenses and intended commercial eligibility need separate review.
+Neither HF publication nor legal clearance is performed by the builder.</p>
+<hr><p><a href="RELEASE_NOTES.md" download>Download original text</a></p></main></body></html>

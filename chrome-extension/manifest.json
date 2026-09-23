@@ -1,0 +1,1 @@
+{"manifest_version":3,"name":"Book OCR Studio — Chrome connection","version":"0.1.0","description":"Connect the selected Kindle tab to the local OCR app.","permissions":["debugger","tabs","alarms"],"host_permissions":["http://127.0.0.1:8508/*"],"background":{"service_worker":"background.js"},"action":{"default_title":"Open Book OCR Studio"}}

@@ -1,0 +1,5 @@
+# Optional separate environment; review YomiToku terms before installation.
+yomitoku==0.15.0
+opencv-python==4.14.0.94
+torch==2.10.0
+torchvision==0.25.0
