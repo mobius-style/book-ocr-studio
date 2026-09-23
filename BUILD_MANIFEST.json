@@ -27,12 +27,12 @@
       "bytes": 34020
     },
     "README.md": {
-      "sha256": "1b98ea217e4ebc46769d0fbaddf9331c17eba527153ba25589e5938e03055d99",
-      "bytes": 8055
+      "sha256": "046e1141ad18273b504d6535e321872294ce21487a330feea74da44a2accaa5c",
+      "bytes": 8056
     },
     "RELEASE_NOTES.md": {
-      "sha256": "d733a9290cde79832c6b531f45a1de124f4d90e72aa2e247c5cf909b76643736",
-      "bytes": 10562
+      "sha256": "f34c45cf9581e74d3d95394a9ec68e6c38b14b1d4d39983715c7b8b89a940f82",
+      "bytes": 10948
     },
     "THIRD_PARTY_NOTICES.md": {
       "sha256": "e6c9947d707148aa847344656bdd021b29df41c4ada0f1bcdd3b25998d67f203",
@@ -135,8 +135,8 @@
       "bytes": 2892
     },
     "index.html": {
-      "sha256": "4d4d0bbb6dbc0f7a59855cbc317fb42d04816eb800385034c8f7a3f157690420",
-      "bytes": 3958
+      "sha256": "e783a61761c6a0f54fb45d76cec80f756752a4174200e3a9659dbd64207c4fa3",
+      "bytes": 3960
     },
     "install.html": {
       "sha256": "293eb552131748185ac4065a353ec60e87bbfc13d9d784d000236a913930b2f1",
@@ -223,8 +223,8 @@
       "bytes": 6017
     },
     "release-notes.html": {
-      "sha256": "8769f34ffe4900869d5a8bb4dd1cae7cd28016df41beecdbcb251d2f78727645",
-      "bytes": 11937
+      "sha256": "ba82199d13a2e634aa51fc89f35ed10dc8b77b8b2e58bf4e19ac82d82cabfea7",
+      "bytes": 12348
     },
     "requirements-yomitoku.txt": {
       "sha256": "40d5ea0a535e8ef2ed0b4947cbd31a543eb12c56e49e177132148ff8ee2a0e13",

@@ -1,7 +1,15 @@
-# Source beta — 2026-09-23, revision 5
+# Source beta — 2026-09-23, revision 6
 
 This is a local-first Linux application source release with a static HF
 landing page. It is not a model release or an online OCR service.
+
+## Revision 6: wording only
+
+- The short description, README opening line and landing-page lead now name
+  Kindle books first, since capturing your own Kindle books is the workflow
+  this application adds beyond ordinary PDF/image OCR. No new compatibility
+  claim: Kindle layouts are still not universally validated.
+- No code, model default, supported-model scope or license change.
 
 ## Revision 5: updated model-comparison evidence
 

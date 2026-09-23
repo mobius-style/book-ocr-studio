@@ -7,14 +7,14 @@ sdk: static
 app_file: index.html
 pinned: false
 license: agpl-3.0
-short_description: Local-first book OCR with Gemma review and portable exports
+short_description: Kindle, PDF and scan OCR on your own PC, with Gemma review
 ---
 
 *The block above is Hugging Face Space metadata; it is not application configuration.*
 
 # Book OCR Studio — Local-first book OCR
 
-Turn PDFs, page images and Kindle captures into files you can read, search or give to a language model — on your own computer.
+Turn your Kindle books, PDFs and page images into files you can read, search or give to a language model — on your own computer.
 
 **Local OCR. Local Gemma review. Local MD, HTML, PDF and EPUB export.**
 
