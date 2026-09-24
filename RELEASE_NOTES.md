@@ -1,7 +1,19 @@
-# Source beta — 2026-09-24, revision 9
+# Source beta — 2026-09-24, revision 10
 
 This is a local-first Linux application source release with a static HF
 landing page. It is not a model release or an online OCR service.
+
+## Revision 10: resource admission and Quick mode
+
+- GPU admission rechecks free VRAM before OCR and after OCR exits in sequential local review. Two consecutive samples must meet the existing budget, with a bounded 30-second wait. Query errors stop admission; memory exhaustion uses the existing fallback path. This cannot reserve VRAM against unrelated processes, and external API server allocations are not controlled.
+- Fast review shows pending differences alongside source images, including deferred and failed reviews. Byte-identical valid pages need no decision and retain original OCR; they are not labeled human-approved. Approve/keep-original buttons advance the pending queue. Native keyboard navigation uses Tab and Enter/Space; there are no global Enter/Escape handlers.
+- Optional bulk adoption accepts valid undecided model candidates without manual verification, preserving original OCR and prior page decisions. Decision records identify `bulk_model_adoption` and `human_verified: false`. Failed or stale reviews are excluded. Deferred proposals excluded from a candidate remain excluded. A downstream LLM is not guaranteed to fix missing text, numbers or negations.
+- This package has not been uploaded by the builder. Whole-book throughput and low-VRAM hardware stress testing have not been repeated.
+
+- **Quick mode** groups optional model-candidate adoption with complete-context ZIP preparation. The ZIP includes every selected screen, original OCR, candidates (including invalid/unapproved ones, labeled accordingly), available source images, review records and missing/failure markers. Process logs and endpoint configuration are excluded. Nothing is uploaded automatically. ZIP support and context limits depend on the receiving model interface.
+- Dual mode also checks Gemma GPU memory immediately before server startup. A sufficient final sample gets one additional stability sample instead of a contradictory out-of-memory error.
+- Bulk-adoption provenance is retained in reviewed MD, report.json and reading-format introductions. Partial bulk-write failures still regenerate exports. Decided includes bulk-adopted unchanged candidates with deferred proposals; deferred proposals remain in the handoff.
+- Dedicated Ollama logs now live under private backups/runtime-logs.
 
 ## Revision 9: community ports note
 

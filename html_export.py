@@ -5,7 +5,7 @@ from display_language import english_message
 
 def render(job,cfg):
     esc=lambda s:html.escape(str(s),quote=True)
-    from context_export import page_context
+    from context_export import page_context, adoption_notice
     sections=[]
     for idx in cfg['selected']:
         folder=Path(job)/f'page-{idx+1:05d}'
@@ -24,4 +24,4 @@ def render(job,cfg):
         context=page_context(folder)
         blocks.insert(0,'<article><h3>Text for model input</h3><p>'+esc(context['status'])+'</p><pre>'+esc(context['text'])+'</pre><h4>Applied changes</h4><pre>'+esc(json.dumps(context['edits'],ensure_ascii=False,indent=2))+'</pre><h4>Suggestions requiring review; not applied to the text</h4><pre>'+esc(json.dumps(context['pending'],ensure_ascii=False,indent=2))+'</pre><p>Unverified model notes: '+esc(' / '.join(context['notes']))+'</p></article>')
         sections.append(f'<section><h2>Page {idx+1}</h2><p>{esc(english_message(error or status))}</p><div class="pair"><img alt="Source page {idx+1}" src="data:image/png;base64,{image}"><div>{"".join(blocks)}</div></div></section>')
-    return '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>OCR review document</title><style>body{font:16px/1.7 sans-serif;margin:2rem;background:#f5f5f5;color:#222}.pair{display:grid;grid-template-columns:1fr 1fr;gap:2rem}.pair img{width:100%;position:sticky;top:1rem;align-self:start}article{background:white;padding:1rem;margin-bottom:1rem}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}small{color:#555}@media(max-width:800px){.pair{display:block}}</style><h1>Model input text, suggestions and source images</h1><p>Region order is detected automatically. Check it against the images. Original OCR is preserved. Model input text is original OCR or approved content. Unapproved suggestions are listed separately for review.</p>'+''.join(sections)+'</html>'
+    return '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>OCR review document</title><style>body{font:16px/1.7 sans-serif;margin:2rem;background:#f5f5f5;color:#222}.pair{display:grid;grid-template-columns:1fr 1fr;gap:2rem}.pair img{width:100%;position:sticky;top:1rem;align-self:start}article{background:white;padding:1rem;margin-bottom:1rem}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}small{color:#555}@media(max-width:800px){.pair{display:block}}</style><h1>Model input text, suggestions and source images</h1><p>Region order is detected automatically. Check it against the images. Original OCR is preserved. Model input text is original OCR or explicitly adopted content, including optional Quick mode candidates without manual verification. Unapproved suggestions are listed separately for review.</p><p>'+esc(adoption_notice(job,cfg))+'</p>'+''.join(sections)+'</html>'

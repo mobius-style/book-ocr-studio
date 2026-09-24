@@ -2,7 +2,7 @@
 import json,hashlib
 from pathlib import Path
 from review_alignment import risk
-VERSION='context-v3-en'
+VERSION='context-v5-en'
 def digest(b):return hashlib.sha256(b).hexdigest()
 def page_context(folder):
     folder=Path(folder);original=(folder/'original.md').read_text() if (folder/'original.md').exists() else ''
@@ -18,7 +18,7 @@ def page_context(folder):
     approved=decision.get('accepted') and decision.get('candidate_sha256')==review['candidate_sha256']
     result['model']=review.get('model','unknown')
     result['review_profile']=review.get('prompt_profile','legacy')
-    result['status']='Approved by user' if approved else 'Machine-reviewed; not approved'
+    result['status']=('Model candidate adopted in bulk; not manually verified' if decision.get('method')=='bulk_model_adoption' else 'Approved by user') if approved else 'Machine-reviewed; not approved'
     result['notes']=review.get('notes',[]);replacements=[];occupied=[]
     for c in review.get('corrections',[]):
         before,after=c['before'],c['after']
@@ -52,3 +52,8 @@ def render(job,cfg):
         if r['notes']:lines+=['### Review notes (unverified model opinions, not confirmed errors)']+['- '+n for n in r['notes']]
         lines+=['']
     return '\n'.join(lines),dict(version=VERSION,partial=partial,pages=records)
+
+
+def adoption_notice(job,cfg):
+    count=sum(page_context(Path(job)/f'page-{idx+1:05d}')['status']=='Model candidate adopted in bulk; not manually verified' for idx in cfg.get('selected',[]))
+    return f'Quick mode: {count} pages use model candidates adopted without manual verification. Original OCR is retained separately.'

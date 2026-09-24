@@ -113,7 +113,19 @@ def show_job():
                 cfg['mode']='shared' if shared_resume else ('auto' if cfg.get('mode')=='shared' else cfg.get('mode','auto'))
                 save(job/'job.json',cfg);launch(job)
     ready=[i+1 for i in cfg['selected'] if (job/f'page-{i+1:05d}'/'marker.json').exists()]
+    from frontier_export import render_button as render_frontier
+    from fast_review import render as render_fast_review, adopt_pending
+    with st.expander('Quick mode — model adoption and full-context handoff'):
+        st.caption('Skip individual approval: adopt valid undecided model candidates, then prepare the complete handoff. Original OCR and previous page decisions are preserved. Failed or stale reviews remain in the handoff but are not adopted; deferred proposals outside a candidate are not inserted.')
+        st.warning('Not manually verified. A downstream model cannot reliably recover missing text or correct every wrong number, name or negation.')
+        if st.button('Adopt model candidates for Quick mode',key='bulk-adopt-'+job.name,disabled=running or not ready):
+            count=adopt_pending(job,ready)
+            st.session_state.pop('frontier-'+job.name+'-snapshot',None)
+            st.success(f'Adopted {count} pages without manual verification. Original OCR is preserved.')
+        render_frontier(st,job,'frontier-'+job.name,running)
     if ready:
+        with st.expander('Fast review — pending changes and exceptions',expanded=False):
+            render_fast_review(st,job,ready,running,accept)
         num=st.selectbox('Page to inspect',ready,key='page'+job.name)
         folder=job/f'page-{num:05d}'
         left,right=st.columns([1,1])
@@ -130,7 +142,7 @@ def show_job():
                     for correction in review['corrections']:st.write(correction)
                     for note in review['notes']:st.caption(note)
                     decision=read(folder/'decision.json') if (folder/'decision.json').exists() else {}
-                    st.caption('Approved' if decision.get('accepted') else 'Not approved')
+                    st.caption(('Quick mode: adopted without manual verification' if decision.get('method')=='bulk_model_adoption' else 'Approved') if decision.get('accepted') else 'Not approved')
                     if not running:
                         x,y=st.columns(2)
                         if x.button('Approve suggestions for this page',key=f'accept{job.name}{num}'):accept(job,num,True);st.rerun(scope='fragment')

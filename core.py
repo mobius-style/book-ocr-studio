@@ -231,7 +231,7 @@ def accept(job,number,value):
     folder=job/f'page-{number:05d}'
     review=read(folder/'review.json')
     if sha((folder/'candidate.md').read_bytes())!=review['candidate_sha256']: raise ValueError('Candidate hash mismatch')
-    save(folder/'decision.json',dict(accepted=value,candidate_sha256=review['candidate_sha256'],time=time.time()))
+    save(folder/'decision.json',dict(accepted=value,candidate_sha256=review['candidate_sha256'],time=time.time(),method='manual_page_decision',human_verified=bool(value)))
     export(job)
 
 def export(job):
@@ -249,7 +249,10 @@ def export(job):
         def rooted(text):
             return re.sub(r'(!\[[^\]]*\]\()([^):]+)(\))',lambda m:m[1]+folder.name+'/'+m[2]+m[3],text)
         originals.append(header+rooted(original)); candidates.append(header+rooted(candidate)); approved.append(header+rooted(candidate if accepted else original))
-        summary.append(dict(page=idx+1,ocr_empty=not original.strip(),gemma_reviewed=(folder/'review.json').exists(),accepted=bool(accepted)))
+        summary.append(dict(page=idx+1,ocr_empty=not original.strip(),gemma_reviewed=(folder/'review.json').exists(),accepted=bool(accepted),method=decision.get('method','legacy_page_decision') if accepted else 'original_ocr',human_verified=bool(accepted and decision.get('human_verified',decision.get('method')!='bulk_model_adoption'))))
+    bulk=sum(p.get('accepted') and p.get('method')=='bulk_model_adoption' for p in summary)
+    if bulk:
+        approved.insert(0,f'> Quick mode: {bulk} pages use model candidates adopted without manual verification. Original OCR is retained separately.\n\n')
     for name,parts in [('original',originals),('candidates',candidates),('reviewed',approved)]:
         (job/f'{name}.md').write_text(''.join(parts).lstrip(),encoding='utf-8')
     if cfg.get('autopilot'):

@@ -20,7 +20,9 @@ class LocalGemma:
         env.update(CUDA_VISIBLE_DEVICES=gpu_uuid,OLLAMA_VULKAN='false',OLLAMA_HOST=f'127.0.0.1:{port}',OLLAMA_MODELS=model_path,
                    OLLAMA_CONTEXT_LENGTH='8192',OLLAMA_NUM_PARALLEL='1',OLLAMA_MAX_LOADED_MODELS='1',
                    OLLAMA_FLASH_ATTENTION='1',OLLAMA_KV_CACHE_TYPE='q8_0',OLLAMA_NO_CLOUD='1')
-        self.log=(ROOT/f'ollama-gpu{self.gpu}.log').open('ab')
+        log_dir=ROOT/'backups'/'runtime-logs'
+        log_dir.mkdir(parents=True,exist_ok=True,mode=0o700)
+        self.log=(log_dir/f'ollama-gpu{self.gpu}.log').open('ab')
         self.process=OwnedPopen(['ollama','serve'],env=env,stdout=self.log,stderr=self.log,start_new_session=True)
         try:
             for _ in range(60):

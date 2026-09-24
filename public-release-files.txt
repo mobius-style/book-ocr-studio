@@ -75,3 +75,7 @@ public_tests/test_owned_process.py
 docs/images/01-start.png
 docs/images/02-review.jpg
 docs/images/03-markdown.png
+fast_review.py
+gpu_admission.py
+public_tests/test_resource_review.py
+frontier_export.py

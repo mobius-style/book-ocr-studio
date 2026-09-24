@@ -63,9 +63,19 @@ def attempt(job,cfg,plan,ocr_python,ocr_script):
             child=OwnedPopen([ocr_python,ocr_script,str(job)],env=env,stdout=log,stderr=log,start_new_session=True)
         child.ocr_log_path=log_path
         return child
+    def admit(gpu, minimum, stage):
+        from gpu_admission import wait_for_memory
+        def observe(event):
+            save(job/'gpu-admission.json',dict(stage=stage,time=time.time(),**event))
+            status(job,'waiting_gpu',f"Waiting for GPU {gpu}: {event['free_mib']}MiB free / {minimum}MiB required ({stage})")
+        wait_for_memory(gpu,minimum,lambda:(job/'cancel').exists(),observe)
     try:
+        # Fresh admission after planning/preparation, and again at the sequential handoff.
+        admit(plan['ocr_gpu'],14500 if plan['mode']=='shared' else 10000,'OCR')
         status(job,'ocr',f"{plan['mode']} mode: running OCR and review")
         if cfg['gemma'] and not cfg.get('review_connector') and plan['mode'] in {'dual','shared'}:
+            if plan['mode']=='dual':
+                admit(plan['gemma_gpu'],10000 if cfg['model']=='gemma4:12b-it-qat' else 15300,'Gemma (dual)')
             with LocalGemma(plan['gemma_gpu'],job,model=cfg['model']) as endpoint:
                 proc=launch_ocr()
                 try:
@@ -81,6 +91,8 @@ def attempt(job,cfg,plan,ocr_python,ocr_script):
         if proc.returncode:ocr_failure(proc)
         if cfg['gemma'] and plan['mode']=='sequential':
             stop(proc)  # OCR exits and releases allocations before loading Gemma.
+            if not cfg.get('review_connector'):
+                admit(plan['gemma_gpu'],10000 if cfg['model']=='gemma4:12b-it-qat' else 15300,'Gemma after OCR exit')
             if cfg.get('review_connector'):
                 errors=review_ready(job,cfg,'compat:'+cfg['review_connector'])
             else:

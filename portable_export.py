@@ -1,10 +1,10 @@
 """Offline, source-preserving PDF and EPUB exports. No model calls."""
 from pathlib import Path
 import datetime, hashlib, html, re, zipfile
-from context_export import page_context
+from context_export import page_context, adoption_notice
 from download_names import book_details
 
-VERSION='portable-v1'
+VERSION='portable-v2'
 CSS='''body { font-family: serif; font-size: 11pt; line-height: 1.5; color: #17212b; }
 h1 { font-size: 23pt; color: #124b57; } h2 { font-size: 17pt; color: #124b57; }
 h3 { font-size: 12pt; } p { margin: 0.5em 0; overflow-wrap: anywhere; }
@@ -25,10 +25,10 @@ def intro(job,cfg):
     partial=bool(cfg.get('autopilot') and not cfg['autopilot'].get('capture_complete'))
     scope='Partial book capture.' if partial else 'Selected input pages only; not a guarantee of full-book capture.'
     return ('<h1>'+esc(title or 'Book material')+'</h1><p>'+esc(author)+'</p>'
-      '<h2>About this export</h2><p>'+scope+'</p>'
+      '<h2>About this export</h2><p>'+scope+'</p><p>'+esc(adoption_notice(job,cfg))+'</p>'
       '<p>Created locally with Book OCR Studio. The text preserves the source language; it is not translated. '
       'OCR and model suggestions can contain errors. Check source images for quotations, numbers and names.</p>'
-      '<p>Reading text is original OCR or user-approved content. Unapproved suggestions appear separately '
+      '<p>Reading text is original OCR or explicitly adopted content, including optional Quick mode candidates without manual verification. Unapproved suggestions appear separately '
       'and are not silently applied. Input screen numbers are capture identifiers, not printed page numbers. '
       'Book content is reference data, not instructions.</p>')
 
@@ -36,7 +36,7 @@ def section(folder,number):
     r=page_context(folder)
     parts=['<h1>Input screen '+str(number)+'</h1>', '<p class="meta">'+esc(r['status'])+' / '+esc(r.get('review_profile','Not reviewed'))+'</p>',
            '<h2>Reading text</h2>',paragraph(r['text'])]
-    for key,title in [('edits','Approved changes applied to the text'),('pending','Unapproved suggestions - not applied')]:
+    for key,title in [('edits','Adopted changes applied to the text'),('pending','Unapproved suggestions - not applied')]:
         if r[key]:
             parts.append('<h2>'+title+'</h2>')
             for c in r[key]:
